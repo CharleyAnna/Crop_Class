@@ -15,12 +15,14 @@ def select_option():
     while not valid_option:
         try:
             choice = int(input("Option selected: "))
+            print()
             if choice in (1,2):
                 valid_option = True
             else:
                 print("Please enter a valid option")
         except ValueError:
             print("Please enter a valid option")
+    return choice
 
 def create_crop():
     display_menu()
