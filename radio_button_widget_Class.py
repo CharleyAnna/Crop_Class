@@ -12,3 +12,16 @@ class RadioButtonWidget(QWidget):
         self.radio_grou_box = QGroupBox(instruction)
         self.radio_button_group = QButtonGroup()
         
+        #create the radio buttons
+        self.radio_button_list = []
+        for each in button_list:
+            self.radio_button_list.append(QRadioButton(each))
+
+        #set default checked item
+        self.radio_bitton_list[0].setChecked(True)
+
+        #create layout for radio buttons and add them
+        self.radio_button_layout = QVBoxLayout()
+
+            
+        
