@@ -15,10 +15,10 @@ class Animal:
         self._name = "Ben"
 
     def needs(self):
-        return{'Food Need:':self._food_need, 'Water Need:':self._water_need}
+        return{'Food Need':self._food_need, 'Water Need':self._water_need}
 
     def report(self):
-        return{'Type:':self._type, 'Status:':self._status, 'Weight:':self._weight, 'Days Growing:':self._days_growing} 
+        return{'Type':self._type, 'Status':self._status, 'Weight':self._weight, 'Days Growing':self._days_growing} 
         
     def update_status(self):
         if self._weight> 15:
