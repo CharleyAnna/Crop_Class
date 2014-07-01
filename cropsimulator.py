@@ -5,6 +5,8 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from radio_button_widget_Class import * #provides the radio button widget
+from manual_grow_dialog_class import * #provides the manual grow dialog window
+ 
 from wheat_class import *
 from potato_class import *
 
@@ -79,6 +81,7 @@ class CropWindow(QMainWindow):
 
         #connections
         self.automatic_grow_button.clicked.connect(self.automatically_grow_crop)
+        self.manual_grow_button.clicked.connect(self.manually_grow_crop)
         
     def instantiate_crop(self):
         crop_type = self.crop_radio_buttons.selected_button()#get the radio button that was selected
@@ -86,6 +89,7 @@ class CropWindow(QMainWindow):
             self.simulated_crop = Wheat()
         elif crop_type == 2:
             self.simulated_crop = Potato()
+            
         self.create_view_crop_layout(crop_type) #create the view crop growth layout
         self.stacked_layout.addWidget(self.view_crop_widget) #add this to the stacked layout
         self.stacked_layout.setCurrentIndex(1) #change the visible layout in the stack
@@ -95,13 +99,22 @@ class CropWindow(QMainWindow):
             light = random.randint(1,10)
             water = random.randint(1,10)
             self.simulated_crop.grow(light,water)
+        self.update_crop_view_status()
+
+    def manually_grow_crop(self):
+        manual_values_dialog = ManualGrowDialog()
+        manual_values_dialog.exec_() #run the dialog window
+        light, water = manual_values_dialog.values()
+        self.simulated_crop.grow(light, water)
+        self.update_crop_view_status()
 
     def update_crop_view_status(self):
         crop_status_report = self.simulated_crop.report() #get the crop report
 
         #update the text fields
         self.growth_line_edit.setText(str(crop_status_report["Growth"]))
-                
+        self.days_line_edit.setText(str(crop_status_report["Days Growing"]))
+        self.status_line_edit.setText(str(crop_status_report["Status"]))
         
 def main():
     crop_simulation = QApplication(sys.argv)#create new application
