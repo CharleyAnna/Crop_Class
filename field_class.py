@@ -59,7 +59,41 @@ class Field:
                 water = needs["Water Need"]
         return {"Food":food, "Light":light, "Water": water}
     
-
+        def grow(self, light, food, water):
+            #grow the crops
+            if len(self._crops) > 0:
+                for crop in self._crops:
+                    crop.grow(light,water)
+            if len(self._animals) > 0:
+                #grow the animals
+                food_required = 0
+                #get a total of the food required by the animals in the field
+                for animal in self._animals:
+                    needs = animal.needs()
+                    food_required += needs["Food Need"]
+                #if we have more food available than is required we share it out
+                if food > food_required:
+                    additional_food = food - food_required
+                    food = food_required
+                else:
+                    additional_food = 0
+                #grow each animal
+                for animal in self._animals:
+                    #get the animals food needs
+                    needs = animal.needs()
+                    if food >= needs["Food Need"]:
+                        #remove food for this animal from total
+                        food -= needs["Food Need"]
+                        feed = needs["Food Need"]
+                        #see if there is any additional food left
+                        if additional_food > 0:
+                            #remove some additional food for this animal
+                            additional_food -= 1
+                            #add this to the feed to be given to the animal
+                            feed =+ 1
+                        #grow the animal
+                        animal.grow(feed, water)
+            
 def display_crops(crop_list):
     print()
     print("The following crops are in this field: ")
@@ -118,6 +152,8 @@ def main():
     print(report["Crops"])
     report = new_field.report_needs()
     print(report)
+    new_field.grow(10,10,6)
+    print(new_field.report_contents())
 
 if __name__ == "__main__":
     main()
